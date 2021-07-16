@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs"
+    "module": "commonjs",
+    "baseUrl": ".", // This must be specified if "paths" is.
+    "paths": {
+      "@libTypes/*": ["../../lib/@types/*"],
+    },
   },
   "exclude": [
     "node_modules"
@@ -9,5 +13,5 @@
   "types": [
     "node",
     "aws-sdk"
-  ]
+  ],
 }

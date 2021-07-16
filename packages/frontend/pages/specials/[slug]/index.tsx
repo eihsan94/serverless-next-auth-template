@@ -1,7 +1,7 @@
 import React, { FC, useRef, useState } from 'react';
 import { BreadCrumbItemProps } from '../../../components/layout';
 import MagazineEditPage from '../../../components/layout/magazine-page';
-import { Special } from '../../../@types/special';
+import { Special } from '@libTypes/special';
 import { GetServerSideProps } from 'next';
 import { getSpecialHandler, updateSpecialHandler } from '../../../queries/specials';
 import { 

@@ -23,10 +23,10 @@ import {
  } from "@chakra-ui/react";
 import MainButton from "./Buttons/main-button";
 import NormalModal from "./modals/normal-modal";
-import { Post } from "../@types/post";
-import { Magazine } from "../@types/magazine";
-import { Special } from "../@types/special";
-import { Regular } from "../@types/regular";
+import { Post } from "@libTypes/post";
+import { Magazine } from "@libTypes/magazine";
+import { Special } from "@libTypes/special";
+import { Regular } from "@libTypes/regular";
 import * as Yup from 'yup';
 import { Formik, Form, Field,  } from 'formik';
 import encodeToBase64 from "../utils/encodeToBase64";

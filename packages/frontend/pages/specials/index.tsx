@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/dist/client/router'
 import React, { useState } from 'react'
-import { Special } from '../../@types/special'
+import { Special } from '@libTypes/special'
 import AdminPage from '../../components/layout/admin-page'
 import {Button, useDisclosure, useToast} from '@chakra-ui/react';
 import { BreadCrumbItemProps } from '../../components/layout'

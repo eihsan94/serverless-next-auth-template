@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Magazine } from '../../@types/magazine';
+import { Magazine } from '@libTypes/magazine';
 import { updateSpecialHandler } from '../../queries/specials';
 import PostsLists from '../post-lists';
 import {

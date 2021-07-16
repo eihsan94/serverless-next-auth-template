@@ -1,6 +1,6 @@
-import { Special } from "../@types/special";
+import { Special } from "@libTypes/special";
 import axios from "axios";
-import { Post } from "../@types/post";
+import { Post } from "@libTypes/post";
 axios.defaults.baseURL = `${
   process.env.NEXT_PUBLIC_IHSAN_PAY_SERVER_BASE_URL
 }`;

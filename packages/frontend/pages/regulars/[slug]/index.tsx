@@ -1,7 +1,7 @@
 import React, { Dispatch, FC, SetStateAction, useRef, useState } from 'react';
 import { BreadCrumbItemProps } from '../../../components/layout';
 import MagazineEditPage from '../../../components/layout/magazine-page';
-import { Regular } from '../../../@types/regular';
+import { Regular } from '@libTypes/regular';
 import { GetServerSideProps } from 'next';
 import { getRegularHandler, updateRegularHandler } from '../../../queries/regulars';
 import { 

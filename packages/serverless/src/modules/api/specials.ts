@@ -3,12 +3,11 @@
 import * as uuid from 'uuid'
 import { DynamoDB } from 'aws-sdk'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
-import { Special } from '../@types/special'
 import res from '../utils/resUtil'
 import {deleteS3Object, putBase64ToS3} from '../utils/s3Utils'
 import { isBase64 } from '../utils/imageHandlerUtil'
-import { Post } from '../@types/post'
-
+import {Special} from '@libTypes/special'
+import {Post} from '@libTypes/post'
 
 const endpoint = process.env.STAGE === 'local' ? {endpoint: 'http://localhost:8000'} : {}
 const dynamoDb = new DynamoDB.DocumentClient(endpoint)

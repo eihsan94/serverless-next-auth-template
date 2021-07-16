@@ -21,10 +21,8 @@ import {
     ChevronRightIcon,
   } from '@chakra-ui/icons';
 import Logo from './icons/logo';
-import {css} from "@emotion/css";
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { router } from 'websocket';
 import { useRouter } from 'next/dist/client/router';
 
 
@@ -62,7 +60,7 @@ import { useRouter } from 'next/dist/client/router';
           </Flex>
           <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }} align={'center'}>
             <Link onClick={() => router.push('/')}>
-              <Logo width="20px" height="20px" className={css`path {fill:black;}`}/>
+              <Logo width="100px" height="100px" />
             </Link>
             <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
               {init && <DesktopNav />}

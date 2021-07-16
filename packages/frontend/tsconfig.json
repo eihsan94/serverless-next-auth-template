@@ -20,6 +20,7 @@
       "@utils/*": ["utils/*"],
       "@queries/*": ["queries/*"],
       "@helpers/*": ["helpers/*"],
+      "@libTypes/*": ["../../lib/@types/*"],
     },
   },
   "exclude": ["node_modules"],

@@ -11,9 +11,9 @@
     "db:migrate": "serverless dynamodb migrate --stage local",
     "dev": "docker-compose down && docker-compose up -d && npm-run-all -p startLambda:local",
     "startLambda:local": "serverless offline --stage local",
-    "deploy:dev": "serverless deploy --stage dev --aws-profile ihsan-pay",
+    "deploy:dev": "serverless deploy --stage dev",
     "deploy:prd": "serverless deploy --stage prd",
-    "removeInfra:dev": "serverless remove --stage dev --aws-profile ihsan-pay"
+    "removeInfra:dev": "serverless remove --stage dev"
   },
   "keywords": [],
   "author": "",

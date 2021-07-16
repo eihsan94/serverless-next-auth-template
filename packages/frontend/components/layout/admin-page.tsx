@@ -6,15 +6,10 @@ import {
     Heading,
     Text,
     Stack,
-    useToast,
     Button,
-    useDisclosure,
 } from '@chakra-ui/react';
-import { Special } from '../../@types/special';
-import { useRouter } from 'next/dist/client/router';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import { deleteSpecialHandler } from '../../queries/specials';
-import { Magazine } from '../../@types/magazine';
+import { Magazine } from '@libTypes/magazine';
 import { useState } from 'react';
 import NormalModal from '../modals/normal-modal';
 

@@ -1,4 +1,4 @@
-import { Regular } from "../@types/regular";
+import { Regular } from "@libTypes/regular";
 import axios from "axios";
 axios.defaults.baseURL = `${
   process.env.NEXT_PUBLIC_IHSAN_PAY_SERVER_BASE_URL
