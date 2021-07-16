@@ -1,0 +1,15 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "dev": "lerna run dev --parallel --stream",
+    "test": "yarn workspaces -t run test",
+    "build": "yarn workspaces -t run build"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}

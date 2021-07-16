@@ -1,0 +1,34 @@
+{
+  "name": "ihsan-pay-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^1.0.13",
+    "@chakra-ui/react": "^1.6.4",
+    "@emotion/css": "^11.1.3",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "axios": "^0.21.1",
+    "compressorjs": "^1.0.7",
+    "formik": "^2.2.9",
+    "framer-motion": "^4",
+    "next": "11.0.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "uuid": "^8.3.2",
+    "yup": "^0.32.9"
+  },
+  "devDependencies": {
+    "@types/react": "17.0.11",
+    "@types/uuid": "^8.3.1",
+    "eslint": "7.29.0",
+    "eslint-config-next": "11.0.1",
+    "typescript": "4.3.5"
+  }
+}

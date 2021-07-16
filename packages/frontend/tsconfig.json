@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": ".", // This must be specified if "paths" is.
+    "paths": {
+      "@components/*": ["components/*"],
+      "@public/*": ["public/*"],
+      "@utils/*": ["utils/*"],
+      "@queries/*": ["queries/*"],
+      "@helpers/*": ["helpers/*"],
+    },
+  },
+  "exclude": ["node_modules"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+}
