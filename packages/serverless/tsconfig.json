@@ -2,7 +2,11 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "baseUrl": ".", // This must be specified if "paths" is.
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "baseUrl": ".", // This must be specified if you want to specify "paths"
     "paths": {
       "@libTypes/*": ["../../lib/@types/*"],
     },
@@ -14,4 +18,8 @@
     "node",
     "aws-sdk"
   ],
+  "include": [
+    "src/**/*",
+    "handler.ts"
+  ]
 }

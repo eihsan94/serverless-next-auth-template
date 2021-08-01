@@ -2,6 +2,7 @@
   "extends": "./tsconfig",
   "include": [
     "src/**/*.ts",
+    "handler.ts",
   ],
   "exclude": [
     "node_modules",

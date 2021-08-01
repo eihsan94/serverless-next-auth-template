@@ -1,10 +1,12 @@
+import { PermissionType } from "./enums";
+
 export interface User {
     partition_key?: string;
     role_partition_key: string;
     shop_partition_keys: string[];
     email: string;
     password: string;
-    name: string;
+    fullname: string;
     image?: string;
     birthday?: string;
     ihsanPoint: number;
@@ -12,7 +14,7 @@ export interface User {
 
 export interface Role {
     partition_key?: string;
-    permission_partition_keys: string[];
+    permissions: PermissionType[];
     name: string;
     price?: number;
     image?: string;
@@ -93,21 +95,3 @@ export interface Membership {
     description: string;
 }
 
-
-export enum PermissionType {
-    CAN_EDIT_SHOP="CAN_EDIT_SHOP",
-    CAN_EDIT_USER="CAN_EDIT_USER",
-    CAN_EDIT_ROLE="CAN_EDIT_ROLE",
-    CAN_EDIT_COURSE="CAN_EDIT_COURSE",
-    CAN_EDIT_PERMISSION="CAN_EDIT_PERMISSION",
-    CAN_SEE_ANALYTICS="CAN_SEE_ANALYTICS",
-    CAN_HAVE_MULTIPLE_SHOP="CAN_HAVE_MULTIPLE_SHOP",
-    CAN_HAVE_LIMITED_COURSE="CAN_HAVE_LIMITED_COURSE",
-    CAN_HAVE_UNLIMITED_COURSE="CAN_HAVE_UNLIMITED_COURSE",
-    CAN_HAVE_100_COURSE_MAX="CAN_HAVE_100_COURSE_MAX",
-    CAN_HAVE_UNLIMITED_COURSE_MAX="CAN_HAVE_UNLIMITED_COURSE_MAX",
-    CAN_HAVE_5_USER_MAX="CAN_HAVE_5_USER_MAX",
-    CAN_HAVE_50_USER_MAX="CAN_HAVE_10_USER_MAX",
-    CAN_HAVE_500_USER_MAX="CAN_HAVE_500_USER_MAX",
-    CAN_HAVE_UNLIMITED_USER_MAX="CAN_HAVE_UNLIMITED_USER_MAX",
-}

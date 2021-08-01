@@ -1,15 +1,27 @@
-// import { APIGatewayProxyHandler } from 'aws-lambda';
-// import { createSpecialsHandler, deleteSpecialsHandler, getSpecialsHandler, listSpecialsHandler, updateSpecialsHandler } from './modules/api/user';
-// import { createRegularsHandler, deleteRegularsHandler, getRegularsHandler, listRegularsHandler, updateRegularsHandler } from './modules/api/regulars';
+import { APIGatewayProxyHandler } from "aws-lambda";
+import morgan from 'morgan'
+import express from 'express'
+import ServerlessHttp from 'serverless-http'
+import cors from 'cors'
+import userRoutes from "./modules/routes/userRoutes";
 
-// export const listSpecials: APIGatewayProxyHandler = listSpecialsHandler;
-// export const getSpecials: APIGatewayProxyHandler = getSpecialsHandler;
-// export const createSpecials: APIGatewayProxyHandler = createSpecialsHandler;
-// export const updateSpecials: APIGatewayProxyHandler = updateSpecialsHandler;
-// export const deleteSpecials: APIGatewayProxyHandler = deleteSpecialsHandler;
+const app = express();
 
-// export const listRegulars: APIGatewayProxyHandler = listRegularsHandler;
-// export const getRegulars: APIGatewayProxyHandler = getRegularsHandler;
-// export const createRegulars: APIGatewayProxyHandler = createRegularsHandler;
-// export const updateRegulars: APIGatewayProxyHandler = updateRegularsHandler;
-// export const deleteRegulars: APIGatewayProxyHandler = deleteRegularsHandler;
+app.use(cors())
+if (process.env.STAGE === 'dev' || process.env.STAGE === 'local') {
+  app.use(morgan('dev'))
+}
+
+app.use(express.json());
+
+app.use('/api/users', userRoutes)
+
+
+
+app.use((req, res, next) => {
+  return res.status(404).json({
+    error: "Not Found",
+  });
+});
+
+export const server: APIGatewayProxyHandler = ServerlessHttp(app) as APIGatewayProxyHandler;

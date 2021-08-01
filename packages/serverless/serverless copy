@@ -41,7 +41,6 @@ custom:
   serverless-offline:
     httpPort: 3009
     useSeparateProcess: true
-    noPrependStageInUrl: true #need to set this to prevent weird url prefix
 
 provider:
   name: aws
@@ -95,15 +94,91 @@ functions:
   #         pool: MyUserPool
   #         trigger: CustomMessage
 
-  hello:
-    handler: src/handler.server
+  specials_list:
+    handler: src/handler.listSpecials
     events:
       - http:
-          path: /
-          method: ANY
+          path: specials
+          method: get
+          cors: ${self:custom.cors}
+
+  specials_get:
+    handler: src/handler.getSpecials
+    events:
       - http:
-          path: /{proxy+}
-          method: ANY
+          path: specials/{id}
+          method: get
+          cors: ${self:custom.cors}
+
+  specials_create:
+    handler: src/handler.createSpecials
+    events:
+      - http:
+          method: post
+          path: specials
+          cors: ${self:custom.cors}
+          # authorizer:
+          #   name: authorizer
+          #   arn: arn:aws:cognito-idp:ap-northeast-1:626696453961:userpool/ap-northeast-1_WTK7yVU4M
+
+  specials_update:
+    handler: src/handler.updateSpecials
+    events:
+      - http:
+          path: specials/{id}
+          method: put
+          cors: ${self:custom.cors}
+
+  specials_delete:
+    handler: src/handler.deleteSpecials
+    events:
+      - http:
+          path: specials/{id}
+          method: delete
+          cors: ${self:custom.cors}
+
+  regulars_list:
+    handler: src/handler.listRegulars
+    events:
+      - http:
+          path: regulars
+          method: get
+          cors: ${self:custom.cors}
+
+  regulars_get:
+    handler: src/handler.getRegulars
+    events:
+      - http:
+          path: regulars/{id}
+          method: get
+          cors: ${self:custom.cors}
+
+  regulars_create:
+    handler: src/handler.createRegulars
+    events:
+      - http:
+          method: post
+          path: regulars
+          cors: ${self:custom.cors}
+          # authorizer:
+          #   name: authorizer
+          #   arn: arn:aws:cognito-idp:ap-northeast-1:626696453961:userpool/ap-northeast-1_WTK7yVU4M
+
+  regulars_update:
+    handler: src/handler.updateRegulars
+    events:
+      - http:
+          path: regulars/{id}
+          method: put
+          cors: ${self:custom.cors}
+
+  regulars_delete:
+    handler: src/handler.deleteRegulars
+    events:
+      - http:
+          path: regulars/{id}
+          method: delete
+          cors: ${self:custom.cors}
 
 resources:
   Resources:
