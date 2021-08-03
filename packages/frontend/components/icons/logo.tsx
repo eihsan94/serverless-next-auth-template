@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import logo from "@public/images/logo.png"
+import dogo from "@public/images/dogo.png"
 
 interface Props {
 	width: string,
@@ -17,8 +17,8 @@ const Logo: React.FC<Props> = ({
 			width={width}
 			height={height}
 			className={className}
-			src={logo}
-			alt="logo.png"
+			src={dogo}
+			alt="dogo.png"
 			placeholder="blur"
 		/>
 	);
