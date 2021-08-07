@@ -9,15 +9,12 @@ const options  = {
         Providers.LINE({
             clientId: process.env.LINE_CLIENT_ID,
             clientSecret: process.env.LINE_CLIENT_SECRET,
+            scope:'profile openid email',
         }),
-        // Providers.Instagram({
-        //     clientId:'',
-        //     clientSecret: '',
-        // }),
-        // Providers.Google({
-        //     clientId:'',
-        //     clientSecret: '',
-        // }),
+        Providers.Google({
+            clientId:process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        }),
         // Providers.Email({
         //     server: {
         //         host: '',

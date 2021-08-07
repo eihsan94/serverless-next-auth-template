@@ -2,9 +2,10 @@ import React, { FC, useState } from 'react'
 import { Formik, Form, Field,  } from 'formik';
 import * as Yup from 'yup';
 import { EmailIcon, LockIcon } from '@chakra-ui/icons';
-import { Box, Stack, InputGroup, InputLeftElement, Input, Button, useToast, FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react';
+import { Box, Stack, InputGroup, InputLeftElement, Input, Button, useToast, FormControl, FormErrorMessage, FormLabel, Text, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/dist/client/router';
-import MainButton from '@components/Buttons/main-button';
+import { FcGoogle } from 'react-icons/fc';
+
 
 interface Props {
     email: string;
@@ -27,6 +28,10 @@ const AuthForm: FC = () => {
     const toast = useToast()
     const router = useRouter()
     const [isSignup, setIsSignup] = useState<boolean>(false)
+    const auth0: {name: 'LINE' | 'GOOGLE' | '', bg?: string, bgGradient?: string, color: string, icon?: JSX.Element}[] = [
+        {name: 'LINE', bg: '#05B803', color: 'white'},
+        {name: 'GOOGLE', bg:'white', color: 'black', icon: <FcGoogle />},
+    ]
     const loginInputs: InputField[] = [
         {name: 'email', placeholder: 'メールアドレス',  type: 'email',  icon: <EmailIcon color="gray.300" fontSize="1.2em" ml="8px" mt="25px"/>, isInvalid: (errors, touched) => !!(errors.email && touched.email), errors: (errors: any) => errors.email},
         {name: 'password', placeholder: 'パスワード',  type: 'password',  icon: <LockIcon color="gray.300" fontSize="1.2em" ml="10px" mt="20px"/>, isInvalid: (errors, touched) => !!(errors.password && touched.password), errors: (errors: any) => errors.password},
@@ -68,7 +73,32 @@ const AuthForm: FC = () => {
     //   } 
   }
     return (
-        <Box mt={10}>
+        <Box mt={5}>
+            {auth0.map((a, i) => 
+                <Button
+                  key={i}
+                  onClick={() => router.push(`/auth/termOfUse?${a.name}=true`)}
+                  rounded="full" 
+                  size="lg"
+                  fontFamily={'heading'}
+                  w={'full'}
+                  bg={a.bg}
+                  bgGradient={a.bgGradient}
+                  mb={3}
+                  leftIcon={a.icon}
+                  color={a.color}
+                  shadow="md"
+                  _hover={{
+                    boxShadow: 'xl',
+                  }}>
+                  {a.name}で{isSignup ? 'アカウント作成する' : 'ログインする'}
+                </Button>
+              )}
+            <Flex w="full" justify="center" pb={5}>
+                <Text fontSize={{ base: 'sm', sm: 'md' }} color={'gray.500'}>
+                    もしくは
+                </Text>
+            </Flex>
             <Stack spacing={4}>
                 <Formik
                     initialValues={{email: '', password: '', passwordConfirmation: '' }}
@@ -111,7 +141,6 @@ const AuthForm: FC = () => {
                             type="submit"
                             rounded="full" 
                             size="lg"
-                            h={16}
                             mb={5}
                             fontFamily={'heading'}
                             w={'full'}
@@ -127,7 +156,6 @@ const AuthForm: FC = () => {
                             w={'full'}
                             rounded="full" 
                             size="lg" 
-                            h={16}
                             onClick={authToggle}
                             fontFamily={'heading'} 
                             bg={'gray.200'} 

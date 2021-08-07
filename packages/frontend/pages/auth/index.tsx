@@ -5,21 +5,17 @@ import {
     Heading,
     Text,
     Container,
-    Input,
-    Button,
     SimpleGrid,
     Avatar,
     AvatarGroup,
     useBreakpointValue,
     IconProps,
     Icon,
-    InputGroup,
-    InputLeftElement,
     Image,
     useColorModeValue,
   } from '@chakra-ui/react';
 import Logo from '@components/icons/logo';
-import AuthForm from './AuthForm'
+import AuthForm from '../../components/Forms/AuthForm'
   const avatars = [
     {
       name: 'ななみ',
@@ -34,7 +30,7 @@ import AuthForm from './AuthForm'
     const bpVal =  useBreakpointValue({ base: 'md', md: 'lg' })
     const colorMode =  useColorModeValue('red.50', 'red.400')
     const LoginImage = "images/loginImage.jpeg";
-
+    
     return (
       <Box position={'relative'}>
         <Container
@@ -59,30 +55,49 @@ import AuthForm from './AuthForm'
             　　<Text fontSize={{ base: 'sm', sm: 'md' }}　w="full" mb="4" color={'gray.500'}>
             　　    今、イサンぺイを使っているクライアント達
             　　</Text>
-              <AvatarGroup>
-                {avatars.map((avatar) => (
-                  <Avatar
-                    key={avatar.name}
-                    name={avatar.name}
-                    src={avatar.url}
-                    size={bpVal}
-                    position={'relative'}
-                    zIndex={2}
-                    _before={{
-                      content: '""',
-                      width: 'full',
-                      height: 'full',
-                      rounded: 'full',
-                      transform: 'scale(1.125)',
-                      bgGradient: 'linear(to-bl, red.400,pink.400)',
-                      position: 'absolute',
-                      zIndex: -1,
-                      top: 0,
-                      left: 0,
-                    }}
+              <div>
+                
+                <AvatarGroup>
+                  {avatars.map((avatar) => (
+                    <Avatar
+                      key={avatar.name}
+                      name={avatar.name}
+                      src={avatar.url}
+                      size={bpVal}
+                      position={'relative'}
+                      zIndex={2}
+                      _before={{
+                        content: '""',
+                        width: 'full',
+                        height: 'full',
+                        rounded: 'full',
+                        transform: 'scale(1.125)',
+                        bgGradient: 'linear(to-bl, red.400,pink.400)',
+                        position: 'absolute',
+                        zIndex: -1,
+                        top: 0,
+                        left: 0,
+                      }}
+                    />
+                  ))}
+                </AvatarGroup>
+                <Box
+                  mt="5"
+                  h={{base: '100px', md: '300px'}}
+                  w={{base: '200px', md: 'full'}}
+                  rounded={'2xl'}
+                  boxShadow={'2xl'}
+                  overflow={'hidden'}>
+                  <Image
+                    alt={'Hero Image'}
+                    fit={'cover'}
+                    align={'center'}
+                    w={'100%'}
+                    h={'100%'}
+                    src={LoginImage}
                   />
-                ))}
-              </AvatarGroup>
+                </Box>
+              </div>
             </Stack>
           </Stack>
           <Stack
@@ -91,7 +106,7 @@ import AuthForm from './AuthForm'
             px={10}
             py={10}
             spacing={{ base: 8 }}
-            maxW={{ lg: '425px' }}>
+            >
             <Stack spacing={4}>
               <Heading
                 color={'gray.800'}
@@ -113,29 +128,13 @@ import AuthForm from './AuthForm'
           </Stack>
           <Blob
             w={'150%'}
-            h={'150%'}
+            h={'120%'}
             position={'absolute'}
             top={'-20%'}
             left={0}
             zIndex={-1}
             color={colorMode}
           />
-          <Box
-            position={'relative'}
-            height={'300px'}
-            rounded={'2xl'}
-            boxShadow={'2xl'}
-            width={'full'}
-            overflow={'hidden'}>
-            <Image
-              alt={'Hero Image'}
-              fit={'cover'}
-              align={'center'}
-              w={'100%'}
-              h={'100%'}
-              src={LoginImage}
-            />
-          </Box>
         </Container>
         <Blur
           position={'absolute'}
