@@ -5,55 +5,77 @@ import {
   Stack,
   Text,
   Button,
+  useColorModeValue,
+  Box,
+  Checkbox,
+  FormControl,
+  FormLabel,
+  Input,
 } from '@chakra-ui/react';
 import { Illustration } from "../components/assets/illustrations";
 import { useRouter } from "next/dist/client/router";
 import TitleLogo from "../components/icons/TitleLogo";
+import Link from 'next/link'
+import { signIn, signOut, useSession } from 'next-auth/client'
+import React from "react";
 
 
 export default function Home() {
+  const [session, loading] = useSession()
+
   const router = useRouter()
   return (
     <Layout>
-      <Stack 
-          textAlign={'center'}
-          align={'center'}    
-          py={{ base: 5, md: 7 }}
-          spacing={{ base: 8, md: 10 }}
-      >  
-        <Heading
-          fontWeight={600}
-          fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
-          lineHeight={'110%'}>
-            <Flex align="center">
-              <TitleLogo width="300px" height="100px" />管理{' '}
-              <Text as={'span'} color={'orange.400'}>
-                サイト
-              </Text>
-            </Flex>
-        </Heading>
-        <Text color={'gray.500'} maxW={'3xl'}>
-          特集記事、連載記事、読者管などなどを簡単に管理できます
-        </Text>
-        <Stack spacing={6} direction={'row'}>
-          <Button
-            rounded={'full'}
-            px={6}
-            colorScheme={'orange'}
-            bg={'orange.400'}
-            onClick={() => router.push('specials')}
-            _hover={{ bg: 'orange.500' }}>
-              特集記事管理画面に移動
-          </Button>
-        </Stack>
-      </Stack>
-      <Flex w={'full'}>
-        <Illustration
-          height={{ sm: '20rem', lg: '24rem', }}
-          mt={{ base: 5, sm: 7 }}
-        />
-      </Flex>
+      {/* <SimpleCard /> */}
+      {!session ? (
+        <>
+          Not signed in <br />
+          <button onClick={() => signIn()}>Sign In</button>
+        </>
+        )
+        : (  
+        <>
+          signed in as {JSON.stringify(session)} <br />
+          <button onClick={() => signOut()}>Sign Out</button>
+        </>
+        )
+      }
+      
     </Layout>
   )
 }
 
+
+export function SimpleCard() {
+  return (
+    <Flex
+      align={'center'}
+      justify={'center'}
+      bg={useColorModeValue('gray.50', 'gray.800')}>
+      <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+        <Stack align={'center'}>
+          <Heading fontSize={'4xl'}>イサンPAY</Heading>
+          <Heading fontSize={'4xl'}>LINEアカウントの認証</Heading>
+        </Stack>
+        <Box
+          rounded={'lg'}
+          bg={useColorModeValue('white', 'gray.700')}
+          boxShadow={'lg'}
+          p={8}>
+            <Text fontSize={'lg'} color={'gray.600'}>
+              本サービスでは、認証時にユーザーに許可された場合のみ、LINEアカウントに登録されているメールアドレスを取得します。取得したメールアドレスは以下の目的以外で使用されることはありません。また、法令で定められた場合を除き、第三者への提供はいたしません。
+            </Text>
+          <Stack spacing={4} p="10" bg="gray.100">
+            <ul>
+              <li>ユーザーのユニークIDとして管理に利用</li>
+              <li>本サービスからのお知らせやメールマガジンの配信に利用</li>
+              <li>退会時、問い合わせ時などの連絡のために利用</li>
+            </ul>
+          </Stack>
+          <Button w="full" my="2" bg="#05B803" color="white"> LINEログインで認証</Button>
+          <Button w="full" > 戻る</Button>
+        </Box>
+      </Stack>
+    </Flex>
+  );
+}

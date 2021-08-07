@@ -46,8 +46,7 @@ const AuthForm: FC = () => {
             setInputFields(updatedInputFields)
     }
     const submitHandler = async (value: Props) => {
-        console.log(value);
-        
+        console.log(value);    
     //   const res = await updateSpecialHandler(value)
     //   await router.push('/')
     //   if (res.partition_key) {
