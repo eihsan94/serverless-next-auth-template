@@ -24,15 +24,23 @@ import Logo from './icons/logo';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/dist/client/router';
+import { signOut, useSession } from 'next-auth/client';
 
 
   export default function Nav() {
     const router = useRouter()
     const { isOpen, onToggle } = useDisclosure();
+    const [session] = useSession()
     const [init, setInit] = useState(false)
     useEffect(() => {
       setInit(true)
     },[])
+    const authHandler = async() => {
+      if (session) {
+        return await signOut()
+      }
+      router.push('/auth')
+    }
     return (
       <Box>
         <Flex
@@ -73,25 +81,16 @@ import { useRouter } from 'next/dist/client/router';
             direction={'row'}
             spacing={6}>
             <Button
-              as={'a'}
-              fontSize={'sm'}
-              fontWeight={400}
-              variant={'link'}
-              onClick={() => router.push(`#`)}
-              >
-              Sign In
-            </Button>
-            <Button
               display={{ base: 'none', md: 'inline-flex' }}
               fontSize={'sm'}
               fontWeight={600}
               color={'white'}
               bg={'pink.400'}
-              onClick={() => router.push(`#`)}
+              onClick={authHandler}
               _hover={{
                 bg: 'pink.300',
               }}>
-              Sign Up
+                {session ? 'ログアウト' : 'ログイン・新規登録'}
             </Button>
           </Stack>
         </Flex>
