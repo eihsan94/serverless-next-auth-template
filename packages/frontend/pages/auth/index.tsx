@@ -11,25 +11,31 @@ import {
     useBreakpointValue,
     IconProps,
     Icon,
-    Image,
     useColorModeValue,
+    Image,
   } from '@chakra-ui/react';
 import Logo from '@components/icons/logo';
 import AuthForm from '../../components/Forms/AuthForm'
+// import Image from 'next/image'
   const avatars = [
     {
       name: 'ななみ',
-      url: 'https://i.ibb.co/dJ2hxXj/Screen-Shot-2021-08-03-at-21-30-23.png',
+      url: '/images/nanami.jpg',
+    },
+    {
+      name: '陽介',
+      url: '/images/yousuke.jpg',
     },
     {
       name: 'イサン',
-      url: 'https://i.ibb.co/1J5nnR4/ihsan.webp',
+      url: '/images/ihsan.jpg',
     },
+    
   ];
   export default function Index() {
     const bpVal =  useBreakpointValue({ base: 'md', md: 'lg' })
     const colorMode =  useColorModeValue('red.50', 'red.400')
-    const LoginImage = "images/loginImage.jpeg";
+    const LoginImage = "/images/loginImage.jpeg";
     
     return (
       <Box position={'relative'}>
@@ -91,10 +97,10 @@ import AuthForm from '../../components/Forms/AuthForm'
                   <Image
                     alt={'Hero Image'}
                     fit={'cover'}
-                    align={'center'}
                     w={'100%'}
                     h={'100%'}
                     src={LoginImage}
+                    fallbackSrc={LoginImage}
                   />
                 </Box>
               </div>
