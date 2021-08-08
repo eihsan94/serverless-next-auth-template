@@ -207,12 +207,12 @@ resources:
       Properties:
         TableName: ${self:provider.environment.DYNAMODB_TABLE}
         AttributeDefinitions:
-          - AttributeName: partition_key
+          - AttributeName: pk
             AttributeType: S
           - AttributeName: gsi
             AttributeType: S
         KeySchema:
-          - AttributeName: partition_key
+          - AttributeName: pk
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
@@ -220,7 +220,7 @@ resources:
         GlobalSecondaryIndexes:
           - IndexName: gsi_1
             KeySchema:
-              - AttributeName: partition_key
+              - AttributeName: pk
                 KeyType: HASH
               - AttributeName: gsi
                 KeyType: RANGE

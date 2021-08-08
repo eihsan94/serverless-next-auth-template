@@ -1,9 +1,9 @@
 import { PermissionType } from "./enums";
 
 export interface User {
-    partition_key?: string;
-    role_partition_key: string;
-    shop_partition_keys: string[];
+    pk?: string;
+    role_pk: string;
+    shop_pks: string[];
     email: string;
     password: string;
     fullname: string;
@@ -13,7 +13,7 @@ export interface User {
 }
 
 export interface Role {
-    partition_key?: string;
+    pk?: string;
     permissions: PermissionType[];
     name: string;
     price?: number;
@@ -21,16 +21,16 @@ export interface Role {
 }
 
 export interface Permission {
-    partition_key?: string;
+    pk?: string;
     type: PermissionType;
 }
 
 
 export interface Reservation {
-    partition_key?: string;
-    shop_partition_key: string;
-    lesson_partition_key: string;
-    user_partition_key: string;
+    pk?: string;
+    shop_pk: string;
+    lesson_pk: string;
+    user_pk: string;
     purchase_date: string;
     reservation_no: string; // reservation_no
     isWaiting: {
@@ -50,11 +50,11 @@ export interface LessonSetting {
     seat_limits: number;
 }
 export interface MemberNotificationSetting {
-   role_partition_key: string;
+   role_pk: string;
    notification_period: 'ONE_MONTH_BEFORE' | 'TWO_WEEKS_BEFORE' | 'ONE_WEEK_BEFORE';
 }
 export interface Course {
-    partition_key?: string;
+    pk?: string;
     name: string;
     description: string; // コースの全体的な
     lesson_setting: LessonSetting;
@@ -62,22 +62,22 @@ export interface Course {
 }
 
 export interface Lesson {
-    partition_key?: string;
-    course_partition_key: string;
+    pk?: string;
+    course_pk: string;
     description: string; //クラスの内容
     date: string;
     start_time: string;
     end_time: string;
     vip_seats_customers: {
-        user_partition_key: string;
+        user_pk: string;
         price: number;
     }[];
     custom_lesson_setting: LessonSetting;
 }
 export interface Shop {
-    partition_key?: string;
-    course_partition_keys?: string[];
-    membership_partition_keys: string[]
+    pk?: string;
+    course_pks?: string[];
+    membership_pks: string[]
     name: string;
     image?: string;
     analytics: {
@@ -88,8 +88,8 @@ export interface Shop {
     };
 }
 export interface Membership {
-    partition_key?: string;
-    shop_partition_key: string;
+    pk?: string;
+    shop_pk: string;
     price: number;
     name: string;
     description: string;

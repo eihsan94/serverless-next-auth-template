@@ -11,7 +11,7 @@ const partitionKeyPrefix = 'users'
  * @access  Private/Admin
 */
 const getUsers = expressAsyncHandler(async ({res}) => {
-  const result = await getAll('partition_key', partitionKeyPrefix)
+  const result = await getAll('pk', partitionKeyPrefix)
   return res.status(result.status).json(result.json)
 })
 
@@ -28,9 +28,9 @@ const registerUser = expressAsyncHandler(async (req, res) => {
     return res.status(400).json({error: 'User already exists'})
   }
   const Item = {
-    partition_key: `${uuid.v4()}-${partitionKeyPrefix}`,
-    role_partition_key: user.role_partition_key,
-    shop_partition_keys: user.partition_key,
+    pk: `${uuid.v4()}-${partitionKeyPrefix}`,
+    role_pk: user.role_pk,
+    shop_pks: user.pk,
     email: user.email,
     password: await encrypt(user.password),
     fullname: user.fullname,
@@ -64,8 +64,8 @@ const updateUser = expressAsyncHandler(async (req, res) => {
   const user: User = req.body
   const hashedPassword = user.password ? await encrypt(user.password) : ''
   const keyValArr = [
-    {key: 'role_partition_key', val: user.role_partition_key} ,
-    {key: 'shop_partition_keys', val: user.shop_partition_keys} ,
+    {key: 'role_pk', val: user.role_pk} ,
+    {key: 'shop_pks', val: user.shop_pks} ,
     {key: 'email', val: user.email} ,
     {key: 'password', val: hashedPassword} ,
     {key: 'fullname', val: user.fullname} ,

@@ -24,9 +24,9 @@ export const getSingle = async(id: string | number): Promise<CrudResponse> => {
   const params = {
       TableName: process.env.DYNAMODB_TABLE,
       Key: {
-        partition_key: id,
+        pk: id,
       }
-  };  
+  };
   let res = {json: {}, status: 200};
   try {
       res.json = (await dynamoDb.get(params).promise()).Item;
@@ -70,7 +70,7 @@ export const putSingle = async(id: string, keyValArr: {key: string, val: any, al
   
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
-    Key: { partition_key: id },
+    Key: { pk: id },
     UpdateExpression: updateExpression,
     ExpressionAttributeValues: expressionAttributeValues,
     ReturnValues: 'ALL_NEW',
@@ -92,7 +92,7 @@ export const deleteSingle = async(id: string): Promise<CrudResponse> => {
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     Key: {
-      partition_key: id,
+      pk: id,
     }
   }
 

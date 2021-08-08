@@ -54,7 +54,7 @@ const AuthForm: FC = () => {
         console.log(value);    
     //   const res = await updateSpecialHandler(value)
     //   await router.push('/')
-    //   if (res.partition_key) {
+    //   if (res.pk) {
     //       toast({
     //           title: `成功`,
     //           description: `${res.title}更新しました`,

@@ -16,7 +16,7 @@
 //   let result;
 //   const params = {
 //     TableName: process.env.DYNAMODB_TABLE,
-//     FilterExpression: 'contains(partition_key,:key)',
+//     FilterExpression: 'contains(pk,:key)',
 //     ExpressionAttributeValues: {
 //       ':key': partitionKeyPrefix,
 //     },
@@ -34,7 +34,7 @@
 //   const params = {
 //     TableName: process.env.DYNAMODB_TABLE,
 //     Key: {
-//       partition_key: id,
+//       pk: id,
 //     }
 //   }
 //   try {
@@ -50,8 +50,8 @@
 // const createUsersHandler = async(event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
 //   const timestamp = new Date().getTime()
 //   const {
-//     role_partition_key,
-//     shop_partition_keys,
+//     role_pk,
+//     shop_pks,
 //     email,
 //     password,
 //     name,
@@ -62,9 +62,9 @@
 //   const params = {
 //     TableName: process.env.DYNAMODB_TABLE,
 //     Item: {
-//       partition_key: `${uuid.v4()}-${partitionKeyPrefix}`,
-//       role_partition_key,
-//       shop_partition_keys,
+//       pk: `${uuid.v4()}-${partitionKeyPrefix}`,
+//       role_pk,
+//       shop_pks,
 //       email,
 //       password,
 //       name,
@@ -86,8 +86,8 @@
 // const updateUsersHandler = async(event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
 //     const {id}  = event.pathParameters;
 //     const {
-//       role_partition_key,
-//       shop_partition_keys,
+//       role_pk,
+//       shop_pks,
 //       email,
 //       password,
 //       name,
@@ -128,7 +128,7 @@
 //     const updateExpression = `set ${updatedAttributes.join(', ')}`;
 //     const params = {
 //       TableName: process.env.DYNAMODB_TABLE,
-//       Key: { partition_key: id },
+//       Key: { pk: id },
 //       UpdateExpression: updateExpression,
 //       ExpressionAttributeValues: expressionAttributeValues,
 //       ReturnValues: 'ALL_NEW',
@@ -154,7 +154,7 @@
 //   const params = {
 //     TableName: process.env.DYNAMODB_TABLE,
 //     Key: {
-//       partition_key: id,
+//       pk: id,
 //     }
 //   }
 //   try {

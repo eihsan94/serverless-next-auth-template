@@ -1792,6 +1792,11 @@
     npmlog "^4.1.2"
     write-file-atomic "^3.0.3"
 
+"@next-auth/dynamodb-adapter@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@next-auth/dynamodb-adapter/-/dynamodb-adapter-0.4.2.tgz#9e56a10dadb57471e000dd8d9a34021a83b80744"
+  integrity sha512-LOE8y/vC/z/hf1YP/kehhNTpdceertSV0fLNHB2rvFwLnprYm0SgAiaRSyOLWitb0WgYAn3BTmhBrHKc+6Xciw==
+
 "@next-auth/prisma-legacy-adapter@0.0.1-canary.127":
   version "0.0.1-canary.127"
   resolved "https://registry.yarnpkg.com/@next-auth/prisma-legacy-adapter/-/prisma-legacy-adapter-0.0.1-canary.127.tgz#09223de6d0350e53afc4bd0dda056a2fde27d8d3"

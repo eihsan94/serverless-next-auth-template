@@ -127,17 +127,17 @@ resources:
                 Fn::Join:
                   ["", ["arn:aws:s3:::", { "Ref": "MediasBucket" }, "/*"]]
 
-    UsersTable:
+    AppTable:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:provider.environment.DYNAMODB_TABLE}
         AttributeDefinitions:
-          - AttributeName: partition_key
+          - AttributeName: pk
             AttributeType: S
           - AttributeName: gsi
             AttributeType: S
         KeySchema:
-          - AttributeName: partition_key
+          - AttributeName: pk
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
@@ -145,9 +145,43 @@ resources:
         GlobalSecondaryIndexes:
           - IndexName: gsi_1
             KeySchema:
-              - AttributeName: partition_key
+              - AttributeName: pk
                 KeyType: HASH
               - AttributeName: gsi
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}-user
+        AttributeDefinitions:
+          - AttributeName: pk
+            AttributeType: S
+          - AttributeName: sk
+            AttributeType: S
+          - AttributeName: GSI1PK
+            AttributeType: S
+          - AttributeName: GSI1SK
+            AttributeType: S
+        KeySchema:
+          - AttributeName: pk
+            KeyType: HASH
+          - AttributeName: sk
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: GSI1
+            KeySchema:
+              - AttributeName: GSI1PK
+                KeyType: HASH
+              - AttributeName: GSI1SK
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
