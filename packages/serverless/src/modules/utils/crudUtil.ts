@@ -3,9 +3,9 @@ const endpoint = process.env.STAGE === 'local' ? {endpoint: 'http://localhost:80
 const dynamoDb = new DynamoDB.DocumentClient(endpoint)
 
 export type CrudResponse = {json: any, status: number}
-export const getAll = async(attr: string ,val: string | number): Promise<CrudResponse> => {
+export const getAll = async(attr: string ,val: string | number, tablePrefix?: string): Promise<CrudResponse> => {
   const params = {
-      TableName: process.env.DYNAMODB_TABLE,
+      TableName: `${process.env.DYNAMODB_TABLE}${tablePrefix}`,
       FilterExpression: `contains(${attr},:key)`,
       ExpressionAttributeValues: {
         ':key': val,
@@ -20,13 +20,15 @@ export const getAll = async(attr: string ,val: string | number): Promise<CrudRes
   return res
 }
 
-export const getSingle = async(id: string | number): Promise<CrudResponse> => {
+export const getSingle = async(id: string | number, tablePrefix?: string): Promise<CrudResponse> => {
   const params = {
-      TableName: process.env.DYNAMODB_TABLE,
+      TableName: `${process.env.DYNAMODB_TABLE}${tablePrefix}`,
       Key: {
         pk: id,
       }
   };
+  console.log(params);
+  
   let res = {json: {}, status: 200};
   try {
       res.json = (await dynamoDb.get(params).promise()).Item;
@@ -37,9 +39,9 @@ export const getSingle = async(id: string | number): Promise<CrudResponse> => {
 }
 
 
-export const postSingle = async(Item: any): Promise<CrudResponse> => {
+export const postSingle = async(Item: any, tablePrefix?: string): Promise<CrudResponse> => {
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
+    TableName: `${process.env.DYNAMODB_TABLE}${tablePrefix}`,
     Item,
   }
   let res = {json: {}, status: 201};
@@ -53,7 +55,7 @@ export const postSingle = async(Item: any): Promise<CrudResponse> => {
   return res;
 }
 
-export const putSingle = async(id: string, keyValArr: {key: string, val: any, alwaysUpdate?: boolean}[]): Promise<CrudResponse> => {
+export const putSingle = async(id: string, keyValArr: {key: string, val: any, alwaysUpdate?: boolean}[], tablePrefix?: string): Promise<CrudResponse> => {
   const updatedAttributes = [];
   const expressionAttributeValues: any = {};
   
@@ -69,7 +71,7 @@ export const putSingle = async(id: string, keyValArr: {key: string, val: any, al
   const updateExpression = `set ${updatedAttributes.join(', ')}`;
   
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
+    TableName: `${process.env.DYNAMODB_TABLE}${tablePrefix}`,
     Key: { pk: id },
     UpdateExpression: updateExpression,
     ExpressionAttributeValues: expressionAttributeValues,
@@ -87,10 +89,10 @@ export const putSingle = async(id: string, keyValArr: {key: string, val: any, al
   return res;
 }
 
-export const deleteSingle = async(id: string): Promise<CrudResponse> => {
+export const deleteSingle = async(id: string, tablePrefix?: string): Promise<CrudResponse> => {
   let result;
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
+    TableName: `${process.env.DYNAMODB_TABLE}${tablePrefix}`,
     Key: {
       pk: id,
     }
@@ -109,4 +111,27 @@ export const deleteSingle = async(id: string): Promise<CrudResponse> => {
     res = {json: {error: err}, status: 500}
   }
   return res;
+}
+
+// this request needs to make like this because it uses reserved attributes name
+export const getAllUser = async(type: 'ACCOUNT' | 'SESSION' | 'USER' | ''): Promise<CrudResponse> => {
+  const params = {
+      TableName: `${process.env.DYNAMODB_TABLE}-user`,
+      FilterExpression: `contains(#user_type,:key)`,
+      ExpressionAttributeValues: {
+        ':key': type,
+      },
+      ExpressionAttributeNames: {
+        "#user_type": "type" // type is reserved name so we use #user_type as a temp subs for making a filter expression
+      },
+  };  
+  console.log(params);
+  
+  let res = {json: {}, status: 200};
+  try {
+      res.json = (await dynamoDb.scan(params).promise()).Items;
+    } catch(err) {
+      res = {json: {error: err}, status: 500}
+  }  
+  return res
 }

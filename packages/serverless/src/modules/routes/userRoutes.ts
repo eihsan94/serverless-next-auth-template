@@ -4,11 +4,13 @@ import {
   // authUser,
   // getUserProfile,
   // updateUserProfile,
-  registerUser,
   getUsers,
   getUserById,
-  updateUser,
   deleteUser,
+  getCurrentLoginUsers,
+  getAllUserInfo,
+  registerUser,
+  // updateUser,
   // deleteUser,
   // getUserById,
   // updateUser,
@@ -17,7 +19,10 @@ import {
 // import { protect, onlyPermit } from '../middleware/authMiddleware.js'
 // import {PermissionType} from '@libTypes/enums'
 
-userRoutes.route('/').post(registerUser).get(getUsers)
+userRoutes.route('/').get(getUsers).post(registerUser)
+userRoutes.route('/all').get(getAllUserInfo)
+userRoutes.route('/currentLoginUser').get(getCurrentLoginUsers)
+
 // userRoutes.route('/').post(registerUser).get(protect, onlyPermit(PermissionType.CAN_EDIT_USER), getUsers)
 // userRoutes.post('/login', authUser)
 // userRoutes
@@ -32,7 +37,7 @@ userRoutes.route('/').post(registerUser).get(getUsers)
 userRoutes
   .route('/:id')
     .get(getUserById)
-    .put(updateUser)
+    // .put(updateUser)
     .delete(deleteUser)
 
 // userRoutes

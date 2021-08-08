@@ -2,14 +2,19 @@ import { PermissionType } from "./enums";
 
 export interface User {
     pk?: string;
+    id?: string;
+    sk?: string;
     role_pk: string;
     shop_pks: string[];
-    email: string;
-    password: string;
-    fullname: string;
+    name?: string; // this cannot be changed by user
+    nickname: string; // this can be changed by user
+    type?: string;
     image?: string;
+    password?: string; // currently we only enabled login with provider so this is null
     birthday?: string;
     ihsanPoint: number;
+    email?: string;
+    emailVerified: boolean;
 }
 
 export interface Role {
@@ -30,7 +35,7 @@ export interface Reservation {
     pk?: string;
     shop_pk: string;
     lesson_pk: string;
-    user_pk: string;
+    user_id: string;
     purchase_date: string;
     reservation_no: string; // reservation_no
     isWaiting: {
@@ -69,7 +74,7 @@ export interface Lesson {
     start_time: string;
     end_time: string;
     vip_seats_customers: {
-        user_pk: string;
+        user_id: string;
         price: number;
     }[];
     custom_lesson_setting: LessonSetting;

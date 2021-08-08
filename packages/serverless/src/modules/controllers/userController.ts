@@ -1,46 +1,38 @@
+import { User } from '@libTypes/types'
 import expressAsyncHandler from 'express-async-handler'
-import {User} from '@libTypes/types'
-import * as uuid from 'uuid'
+import { deleteSingle, getAll, getSingle, postSingle, putSingle, getAllUser } from '../utils/crudUtil'
 import { encrypt } from '../utils/encryptionUtil'
-import { deleteSingle, getAll, getSingle, postSingle, putSingle } from '../utils/crudUtil'
+import * as uuid from 'uuid'
 
-const partitionKeyPrefix = 'users'
 /**
  * @desc    Get all users
  * @route   GET /api/users
  * @access  Private/Admin
 */
 const getUsers = expressAsyncHandler(async ({res}) => {
-  const result = await getAll('pk', partitionKeyPrefix)
+  const result = await getAllUser('USER')
   return res.status(result.status).json(result.json)
 })
 
+
 /**
- * @desc    Register a new user
- * @route   POST /api/users
- * @access  Public
+ * @desc    Get all users info including sessions and accounts provided by the provider
+ * @route   GET /api/users
+ * @access  Private/Admin
 */
-const registerUser = expressAsyncHandler(async (req, res) => {
-  const timestamp = new Date().getTime()
-  const user: User = req.body
-  const userExist = (await getAll('email', user.email)).json.length > 0
-  if (userExist) {
-    return res.status(400).json({error: 'User already exists'})
-  }
-  const Item = {
-    pk: `${uuid.v4()}-${partitionKeyPrefix}`,
-    role_pk: user.role_pk,
-    shop_pks: user.pk,
-    email: user.email,
-    password: await encrypt(user.password),
-    fullname: user.fullname,
-    image: user.image,
-    birthday: user.birthday,
-    ihsanPoint: user.ihsanPoint,
-    createdAt: timestamp,
-    updatedAt: timestamp
-  }
-  const result = await postSingle(Item)
+const getAllUserInfo = expressAsyncHandler(async ({res}) => {
+  const result = await getAllUser('')
+  return res.status(result.status).json(result.json)
+})
+
+
+/**
+ * @desc    Get all users that currently login into the app 
+ * @route   GET /api/users
+ * @access  Private/Admin
+*/
+const getCurrentLoginUsers = expressAsyncHandler(async ({res}) => {
+  const result = await getAllUser('SESSION')
   return res.status(result.status).json(result.json)
 })
 
@@ -50,32 +42,43 @@ const registerUser = expressAsyncHandler(async (req, res) => {
  * @access  all
 */
 const getUserById = expressAsyncHandler(async (req, res) => {
-  const result = await getSingle(req.params.id)
-  delete result.json.password
-  return res.status(result.status).json(result.json)
+  const result = await getAll('id', req.params.id, '-user')
+  const user = result.json[0]
+  return res.status(result.status).json(user)
 })
+
+
 /**
- * @desc    Update user profile
- * @route   PUT /api/users/profile
- * @access  Private
- */
-const updateUser = expressAsyncHandler(async (req, res) => {
-  const id  = req.params.id
+ * @desc    Register a new user
+ * @route   POST /api/users
+ * @access  Public
+*/
+const registerUser = expressAsyncHandler(async (req, res) => {
+  const timestamp = new Date().getTime()
   const user: User = req.body
-  const hashedPassword = user.password ? await encrypt(user.password) : ''
-  const keyValArr = [
-    {key: 'role_pk', val: user.role_pk} ,
-    {key: 'shop_pks', val: user.shop_pks} ,
-    {key: 'email', val: user.email} ,
-    {key: 'password', val: hashedPassword} ,
-    {key: 'fullname', val: user.fullname} ,
-    {key: 'image', val: user.image} ,
-    {key: 'birthday', val: user.birthday} ,
-    {key: 'ihsanPoint', val: user.ihsanPoint} ,
-  ]
-  const result = await putSingle(id, keyValArr)
+  const userExist = (await getAll('email', user.email, '-user')).json.length > 0
+  if (userExist) {
+    return res.status(400).json({error: 'このメールはすでに登録されています。'})
+  }
+  const id= uuid.v4()
+  const Item = {
+    pk: `USER#${id}`,
+    sk: `USER#${id}`,
+    id, 
+    role_pk: user.role_pk,
+    shop_pks: user.pk,
+    email: user.email,
+    password: await encrypt(user.password),
+    nickname: user.nickname,
+    image: user.image,
+    birthday: user.birthday,
+    type: 'USER',
+    ihsanPoint: user.ihsanPoint || 0,
+    createdAt: timestamp,
+    updatedAt: timestamp
+  }
+  const result = await postSingle(Item, '-user')
   return res.status(result.status).json(result.json)
-  
 })
 
 /**
@@ -85,49 +88,39 @@ const updateUser = expressAsyncHandler(async (req, res) => {
 */ 
 const deleteUser = expressAsyncHandler(async (req, res) => {
   const id  = req.params.id
-  const result = await deleteSingle(id)
+  const result = await deleteSingle(id, '-user')
   return res.status(result.status).json(result.json)
 })
 
-
-// // @desc    Auth user & get token
-// // @route   POST /api/users/login
-// // @access  Public
-// const authUser = expressAsyncHandler(async (req, res) => {
-//   const { email, password } = req.body
-//   const date = new Date();
-//   date.setDate(date.getDate() + 10);
-  
-//   const user = await User.findOne({ email })
-//   if (user && (await user.matchPassword(password))) {
-//     const user_roles = await Role.find({_id: { "$in" : user.role_ids}})
-//     const user_role_types = user_roles.map(r => r.type)
-//     res.json({
-//       _id: user._id,
-//       name: user.name,
-//       email: user.email,
-//       isAdmin: user.isAdmin,
-//       favoriteProductIds: user.favoriteProductIds,
-//       role_ids: user.role_ids,
-//       address: user.address,
-//       city: user.city,
-//       postalCode: user.postalCode,
-//       country: user.country,
-//       roles: user_role_types,
-//       token: generateToken(user._id),
-//       expiresIn: date
-//     })
-//   } else {
-//     res.status(401)
-//     throw new Error('Invalid email or password')
-//   }
-// })
+/**
+ * @desc    Update user profile
+ * @route   PUT /api/users/profile
+ * @access  Private
+ */
+const updateUserProfile = expressAsyncHandler(async (req, res) => {
+  const id  = req.params.id
+  const user: User = req.body
+  const hashedPassword = user.password ? await encrypt(user.password) : ''
+  const keyValArr = [
+    {key: 'role_pk', val: user.role_pk} ,
+    {key: 'shop_pks', val: user.shop_pks} ,
+    {key: 'email', val: user.email} ,
+    {key: 'password', val: hashedPassword} ,
+    {key: 'nickname', val: user.nickname} ,
+    {key: 'image', val: user.image} ,
+    {key: 'birthday', val: user.birthday} ,
+    {key: 'ihsanPoint', val: user.ihsanPoint} ,
+  ]
+  const result = await putSingle(id, keyValArr)
+  return res.status(result.status).json(result.json)
+})
 
 export {
   getUsers,
-  registerUser,
   getUserById,
-  updateUser,
   deleteUser,
-//   authUser,
+  getCurrentLoginUsers,
+  getAllUserInfo,
+  updateUserProfile,
+  registerUser,
 }
