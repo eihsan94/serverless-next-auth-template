@@ -1,7 +1,7 @@
 import { User } from '@libTypes/types'
 import expressAsyncHandler from 'express-async-handler'
 import { deleteSingle, getAll, getSingle, postSingle, putSingle, getAllUser } from '../utils/crudUtil'
-import { encrypt } from '../utils/encryptionUtil'
+import { encrypt, validatePassword } from '../utils/encryptionUtil'
 import * as uuid from 'uuid'
 
 /**
@@ -56,9 +56,11 @@ const getUserById = expressAsyncHandler(async (req, res) => {
 const registerUser = expressAsyncHandler(async (req, res) => {
   const timestamp = new Date().getTime()
   const user: User = req.body
-  const userExist = (await getAll('email', user.email, '-user')).json.length > 0
+  const users = (await getAll('email', user.email, '-user')).json
+  const userExist = users.length >0 
   if (userExist) {
-    return res.status(400).json({error: 'このメールはすでに登録されています。'})
+    const isRegisteredWithGoogle = users.filter((u: User) => u.GSI1PK).length > 0
+    return res.status(400).json({error: isRegisteredWithGoogle ?  `このメールはすでにgoogleで登録されたので, googleでログインしてください` : `このメールはすでに登録されています。`})
   }
   const id= uuid.v4()
   const Item = {
@@ -100,6 +102,10 @@ const deleteUser = expressAsyncHandler(async (req, res) => {
 const updateUserProfile = expressAsyncHandler(async (req, res) => {
   const id  = req.params.id
   const user: User = req.body
+  const userExist = (await getAll('email', user.email, '-user')).json.length > 0
+  if (userExist) {
+    return res.status(400).json({error: 'このメールはすでに登録されています。'})
+  }
   const hashedPassword = user.password ? await encrypt(user.password) : ''
   const keyValArr = [
     {key: 'role_pk', val: user.role_pk} ,
@@ -114,6 +120,46 @@ const updateUserProfile = expressAsyncHandler(async (req, res) => {
   const result = await putSingle(id, keyValArr)
   return res.status(result.status).json(result.json)
 })
+/**
+ * @desc    Auth user & get token
+ * @route   POST /api/users/login
+ * @access  Public
+ */
+const authUser = expressAsyncHandler(async (req, res) => {
+  const { email, password } = req.body
+  const date = new Date();
+  date.setDate(date.getDate() + 10);
+  const users = (await getAll('email', email, '-user')).json
+  // CHECK IF EMAIL IS REGISTERED USING GOOGLE
+  if (users.filter((u: User) => u.GSI1PK)[0]) {
+    return res.status(401).json({error: 'このアカウントはgoogleで登録されたのでgoogleでログインしてください😭'})
+  }
+  const user = users[0]
+  if (!user) {
+    return res.status(401).json({error: 'このアカウントはまだ登録されていません😢'})
+  }
+
+  if (user && (await validatePassword(password, user.password))) {
+    // const user_roles = await Role.find({_id: { "$in" : user.role_ids}})
+    // const user_role_types = user_roles.map(r => r.type)
+    res.json({
+      pk: user.pk,
+      id: user.id,
+      sk: user.sk,
+      role_pk: user.role_pk,
+      shop_pks: user.shop_pks,
+      name: user.name,
+      nickname: user.nickname,
+      image: user.image,
+      birthday: user.birthday,
+      ihsanPoint: user.ihsanPoint,
+      email: user.email,
+      emailVerified: user.emailVerified,
+    })
+  } else {
+    res.status(401).json({error: 'メールアドレスもしくはパスワードが異なります😢'})
+  }
+})
 
 export {
   getUsers,
@@ -123,4 +169,6 @@ export {
   getAllUserInfo,
   updateUserProfile,
   registerUser,
+  authUser,
 }
+

@@ -4,6 +4,7 @@ export interface User {
     pk?: string;
     id?: string;
     sk?: string;
+    GSI1PK?: string;
     role_pk: string;
     shop_pks: string[];
     name?: string; // this cannot be changed by user

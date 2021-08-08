@@ -15,6 +15,8 @@ import {
     Image,
   } from '@chakra-ui/react';
 import Logo from '@components/icons/logo';
+import { redirectHome } from '@utils/ssrAuth';
+import { GetServerSideProps } from 'next';
 import AuthForm from '../../components/Forms/AuthForm'
 // import Image from 'next/image'
   const avatars = [
@@ -191,3 +193,6 @@ import AuthForm from '../../components/Forms/AuthForm'
     );
   };
   
+  export const getServerSideProps: GetServerSideProps = async (context) => {
+    return redirectHome(context)
+  };

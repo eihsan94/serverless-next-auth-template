@@ -5,6 +5,9 @@ import { EmailIcon, LockIcon } from '@chakra-ui/icons';
 import { Box, Stack, InputGroup, InputLeftElement, Input, Button, useToast, FormControl, FormErrorMessage, FormLabel, Text, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/dist/client/router';
 import { FcGoogle } from 'react-icons/fc';
+import { signIn } from 'next-auth/client';
+import { useEffect } from 'react';
+import { signUp } from '@utils/crudUtil';
 
 
 interface Props {
@@ -27,6 +30,19 @@ type InputField = {name: string, placeholder: string, type: string, icon: JSX.El
 const AuthForm: FC = () => {
     const toast = useToast()
     const router = useRouter()
+    useEffect(() => {
+        const error = router.query.error
+        if (error) {
+            toast({
+                title: `エラー`,
+                description: `${error}`,
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+            })
+            router.replace("?error", '', { shallow: true });
+      }
+    }, [router, toast])
     const [isSignup, setIsSignup] = useState<boolean>(false)
     const auth0: {name: 'LINE' | 'GOOGLE' | '', bg?: string, bgGradient?: string, color: string, icon?: JSX.Element}[] = [
         {name: 'LINE', bg: '#05B803', color: 'white'},
@@ -51,27 +67,28 @@ const AuthForm: FC = () => {
             setInputFields(updatedInputFields)
     }
     const submitHandler = async (value: Props) => {
-        console.log(value);    
-    //   const res = await updateSpecialHandler(value)
-    //   await router.push('/')
-    //   if (res.pk) {
-    //       toast({
-    //           title: `成功`,
-    //           description: `${res.title}更新しました`,
-    //           status: "success",
-    //           duration: 2000,
-    //           isClosable: true,
-    //       })
-    //   } else {
-    //       toast({
-    //           title: `エラー`,
-    //           description: `エラー内容${JSON.stringify(res)}`,
-    //           status: "error",
-    //           duration: 2000,
-    //           isClosable: true,
-    //       })
-    //   } 
-  }
+        const {email, password} = value;
+        if (isSignup) {
+            const res = (await signUp<Props>({
+                email,
+                password,
+            }))
+            if (!res.email) {
+                const error = (res as unknown as {data: {error: string}}).data.error
+                return toast({
+                    title: `エラー`,
+                    description: `${error}`,
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                })
+            }
+        } 
+        await signIn('credentials', {
+            email,
+            password,
+        })
+    }
     return (
         <Box mt={5}>
             {auth0.map((a, i) => 

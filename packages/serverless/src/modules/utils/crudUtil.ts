@@ -27,7 +27,6 @@ export const getSingle = async(id: string | number, tablePrefix?: string): Promi
         pk: id,
       }
   };
-  console.log(params);
   
   let res = {json: {}, status: 200};
   try {
@@ -125,7 +124,6 @@ export const getAllUser = async(type: 'ACCOUNT' | 'SESSION' | 'USER' | ''): Prom
         "#user_type": "type" // type is reserved name so we use #user_type as a temp subs for making a filter expression
       },
   };  
-  console.log(params);
   
   let res = {json: {}, status: 200};
   try {

@@ -1,20 +1,13 @@
 import express from 'express'
 const userRoutes = express.Router()
 import {
-  // authUser,
-  // getUserProfile,
-  // updateUserProfile,
+  authUser,
   getUsers,
   getUserById,
   deleteUser,
   getCurrentLoginUsers,
   getAllUserInfo,
   registerUser,
-  // updateUser,
-  // deleteUser,
-  // getUserById,
-  // updateUser,
-  // updateUserFavoriteProducts,
 } from '../controllers/userController'
 // import { protect, onlyPermit } from '../middleware/authMiddleware.js'
 // import {PermissionType} from '@libTypes/enums'
@@ -24,7 +17,7 @@ userRoutes.route('/all').get(getAllUserInfo)
 userRoutes.route('/currentLoginUser').get(getCurrentLoginUsers)
 
 // userRoutes.route('/').post(registerUser).get(protect, onlyPermit(PermissionType.CAN_EDIT_USER), getUsers)
-// userRoutes.post('/login', authUser)
+userRoutes.post('/login', authUser)
 // userRoutes
 //   .route('/profile')
 //   .get(protect, getUserProfile)
