@@ -1,4 +1,4 @@
-service: ihsan-pay
+service: serverless-next-auth
 
 plugins:
   - serverless-webpack
@@ -18,7 +18,7 @@ custom:
       - X-Amz-User-Agent
       - If-Modified-Since
 
-  bucketName: ihsan-pay-${opt:stage}-bucket
+  bucketName: serverless-next-auth-${opt:stage}-bucket
   s3:
     host: localhost
     directory: /tmp

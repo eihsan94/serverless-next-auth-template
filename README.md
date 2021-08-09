@@ -1,3 +1,36 @@
+# Serverless NEXT AUTH
+
+This is a boilerplate when making a service using serverless framework aws and login feature with next auth
+
+## Technology stack
+
+```
+ next js
+ serverless framework
+ dynamodb
+ aws lambda
+ aws api gateway
+```
+
+## setting up
+
+1. run
+
+```
+$ yarn dev
+```
+
+2. go to packages/serverless and run db migration
+
+```
+$ yarn setup
+```
+
+3. change packages/frontend/env.dev to packages/frontend/.env
+4. set the
+   - LINE_CLIENT_ID and LINE_CLIENT_SECRET by making a login api channel in [here](https://developers.line.biz/console/)
+   - GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET by making oauth2 credentials [here](https://console.cloud.google.com/apis/credentials?project=ihsan-pay)
+
 ## OAUTH TERM OF USE
 
 ### ENGLISH
